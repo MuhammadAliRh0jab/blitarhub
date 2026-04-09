@@ -50,9 +50,14 @@ export default function Index({ campaigns }) {
                 </nav>
 
                 <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                    <div className="mb-6">
-                        <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Scholarship Hub</h1>
-                        <p className="text-gray-500 mt-2 text-lg">Bantu wujudkan mimpi pendidikan <strong>{campaigns?.length ?? 0}</strong> penerima manfaat.</p>
+                    <div className="mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                        <div>
+                            <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">Scholarship Hub</h1>
+                            <p className="text-gray-500 mt-2 text-lg">Bantu wujudkan mimpi pendidikan <strong>{campaigns?.length ?? 0}</strong> penerima manfaat.</p>
+                        </div>
+                        <Link href={route('scholarships.request')} className="bg-white text-orange-600 border-2 border-orange-600 px-6 py-2.5 rounded-xl font-bold hover:bg-orange-50 transition active:scale-95 shadow-sm text-center">
+                            Ajukan Permohonan
+                        </Link>
                     </div>
 
                     {/* Search & Filter */}
@@ -88,8 +93,8 @@ export default function Index({ campaigns }) {
                                     onClick={() => setCategory(cat)}
                                     className={`px-4 py-1.5 rounded-full text-sm font-semibold transition border ${
                                         category === cat
-                                            ? 'bg-rose-600 text-white border-rose-600 shadow-md shadow-rose-200'
-                                            : 'bg-white text-gray-600 border-gray-200 hover:border-rose-400 hover:text-rose-600'
+                                            ? 'bg-orange-600 text-white border-orange-600 shadow-md shadow-orange-200'
+                                            : 'bg-white text-gray-600 border-gray-200 hover:border-orange-400 hover:text-orange-600'
                                     }`}
                                 >
                                     {cat}
@@ -100,14 +105,14 @@ export default function Index({ campaigns }) {
 
                     <p className="text-sm text-gray-400 mb-4 font-medium">
                         Menampilkan <strong className="text-gray-700">{filtered.length}</strong> dari {campaigns?.length} campaign
-                        {query && <span> untuk "<em className="text-rose-600">{query}</em>"</span>}
+                        {query && <span> untuk "<em className="text-orange-600">{query}</em>"</span>}
                     </p>
 
                     {filtered.length === 0 ? (
                         <div className="text-center py-20 text-gray-400">
                             <div className="text-5xl mb-4">🔍</div>
                             <p className="text-lg font-semibold">Tidak ada campaign yang cocok</p>
-                            <button onClick={() => { setQuery(''); setCategory('Semua'); }} className="mt-4 text-rose-600 font-semibold hover:underline">Reset pencarian</button>
+                            <button onClick={() => { setQuery(''); setCategory('Semua'); }} className="mt-4 text-orange-600 font-semibold hover:underline">Reset pencarian</button>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -117,8 +122,8 @@ export default function Index({ campaigns }) {
                                 return (
                                     <Link key={campaign.id} href={route('scholarships.show', campaign.id)} className="block group">
                                         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                                            <div className={`h-44 flex flex-col items-center justify-center relative overflow-hidden ${isUrgent ? 'bg-gradient-to-tr from-rose-400 via-orange-400 to-amber-300' : 'bg-gradient-to-tr from-orange-300 via-amber-300 to-yellow-200'}`}>
-                                                <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold shadow-sm backdrop-blur-sm ${isUrgent ? 'bg-red-600 text-white animate-pulse' : 'bg-white/90 text-gray-700'}`}>
+                                            <div className={`h-44 flex flex-col items-center justify-center relative overflow-hidden ${isUrgent ? 'bg-gradient-to-tr from-orange-400 via-amber-400 to-yellow-300' : 'bg-gradient-to-tr from-blue-400 via-blue-500 to-indigo-500'}`}>
+                                                <div className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold shadow-sm backdrop-blur-sm ${isUrgent ? 'bg-orange-600 text-white animate-pulse' : 'bg-white/90 text-gray-700'}`}>
                                                     ⏳ {campaign.days_left} Hari Lagi
                                                 </div>
                                                 <div className="absolute top-4 left-4 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-bold text-gray-600">{campaign.category}</div>
@@ -126,10 +131,10 @@ export default function Index({ campaigns }) {
                                             </div>
                                             <div className="p-6 flex-1 flex flex-col">
                                                 <h3 className="text-base font-bold text-gray-900 mb-1 leading-tight">{campaign.title}</h3>
-                                                <p className="text-sm text-gray-500 mb-5">Untuk: <span className="font-bold text-orange-600">{campaign.beneficiary}</span></p>
+                                                <p className="text-sm text-gray-500 mb-5">Untuk: <span className="font-bold text-blue-600">{campaign.beneficiary}</span></p>
                                                 <div className="mt-auto">
                                                     <div className="w-full bg-gray-100 rounded-full h-2 mb-2 overflow-hidden">
-                                                        <div className="h-2 rounded-full bg-gradient-to-r from-orange-500 to-rose-500 transition-all duration-1000" style={{ width: `${progress}%` }}></div>
+                                                        <div className="h-2 rounded-full bg-gradient-to-r from-blue-500 to-orange-500 transition-all duration-1000" style={{ width: `${progress}%` }}></div>
                                                     </div>
                                                     <div className="flex justify-between text-xs mb-4">
                                                         <span><strong className="text-gray-900">{progress}%</strong> <span className="text-gray-400">tercapai</span></span>
@@ -139,7 +144,7 @@ export default function Index({ campaigns }) {
                                                         <span>👥 <strong className="text-gray-700">{campaign.donors.toLocaleString()}</strong> donatur</span>
                                                         <span>🎯 Rp {campaign.target_amount.toLocaleString()}</span>
                                                     </div>
-                                                    <span className="block w-full bg-orange-600 text-white py-3 rounded-xl font-bold text-center text-sm group-hover:bg-orange-700 transition shadow-sm">
+                                                    <span className="block w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-center text-sm group-hover:bg-blue-700 transition shadow-sm">
                                                         💝 Donasi Sekarang
                                                     </span>
                                                 </div>

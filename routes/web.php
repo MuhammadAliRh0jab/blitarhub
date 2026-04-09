@@ -110,6 +110,10 @@ Route::get('/scholarships', function () use ($dummyCampaigns) {
     return Inertia::render('Scholarships/Index', ['campaigns' => $summary]);
 })->name('scholarships.index');
 
+Route::get('/scholarships/request', function () {
+    return Inertia::render('Scholarships/Request');
+})->name('scholarships.request');
+
 Route::get('/scholarships/{id}', function ($id) use ($dummyCampaigns) {
     $campaign = collect($dummyCampaigns)->firstWhere('id', (int)$id);
     if (!$campaign) abort(404);

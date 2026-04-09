@@ -163,8 +163,8 @@ export default function Index({ talents }) {
                                                 {talent.skills?.length > 4 && <span className="px-2 py-0.5 text-[11px] font-bold bg-gray-100 text-gray-500 rounded-full">+{talent.skills.length - 4}</span>}
                                             </div>
                                             <div className="pt-3 border-t border-gray-100 flex justify-between items-center">
-                                                <span className="text-xs text-gray-400 font-medium group-hover:text-orange-600 transition">Lihat Profil →</span>
-                                                <span className="text-xs font-bold bg-gray-900 text-white px-4 py-1.5 rounded-full group-hover:bg-orange-600 transition">Hire</span>
+                                                <span className="text-xs text-gray-400 font-medium group-hover:text-blue-600 transition">Lihat Profil →</span>
+                                                <span className="text-xs font-bold bg-gray-900 text-white px-4 py-1.5 rounded-full group-hover:bg-blue-600 transition">Hire</span>
                                             </div>
                                         </div>
                                     </div>

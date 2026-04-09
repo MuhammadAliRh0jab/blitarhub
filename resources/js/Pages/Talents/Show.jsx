@@ -40,10 +40,10 @@ export default function Show({ talent }) {
                                     <p className="text-sm text-gray-500 mt-1">📍 {talent.location}</p>
                                 </div>
                                 <div className="flex space-x-3 pb-1">
-                                    <button className="bg-orange-600 text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-orange-200 hover:bg-orange-700 transition">
+                                    <button className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition">
                                         Hire Me
                                     </button>
-                                    <button className="border-2 border-gray-300 text-gray-700 px-6 py-2.5 rounded-full font-bold hover:border-orange-600 hover:text-orange-600 transition">
+                                    <button className="border-2 border-gray-300 text-gray-700 px-6 py-2.5 rounded-full font-bold hover:border-blue-600 hover:text-blue-600 transition">
                                         Hubungi
                                     </button>
                                 </div>

@@ -99,8 +99,8 @@ export default function Index({ mentors }) {
                                     onClick={() => setCategory(cat)}
                                     className={`px-4 py-1.5 rounded-full text-sm font-semibold transition border ${
                                         category === cat
-                                            ? 'bg-emerald-600 text-white border-emerald-600 shadow-md shadow-emerald-200'
-                                            : 'bg-white text-gray-600 border-gray-200 hover:border-emerald-400 hover:text-emerald-600'
+                                            ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-200'
+                                            : 'bg-white text-gray-600 border-gray-200 hover:border-blue-400 hover:text-blue-600'
                                     }`}
                                 >
                                     {cat}
@@ -111,14 +111,14 @@ export default function Index({ mentors }) {
 
                     <p className="text-sm text-gray-400 mb-4 font-medium">
                         Menampilkan <strong className="text-gray-700">{filtered.length}</strong> dari {mentors?.length} mentor
-                        {query && <span> untuk "<em className="text-emerald-600">{query}</em>"</span>}
+                        {query && <span> untuk "<em className="text-blue-600">{query}</em>"</span>}
                     </p>
 
                     {filtered.length === 0 ? (
                         <div className="text-center py-20 text-gray-400">
                             <div className="text-5xl mb-4">🔍</div>
                             <p className="text-lg font-semibold">Tidak ada mentor yang cocok</p>
-                            <button onClick={() => { setQuery(''); setCategory('Semua'); }} className="mt-4 text-emerald-600 font-semibold hover:underline">Reset pencarian</button>
+                            <button onClick={() => { setQuery(''); setCategory('Semua'); }} className="mt-4 text-blue-600 font-semibold hover:underline">Reset pencarian</button>
                         </div>
                     ) : (
                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -128,7 +128,7 @@ export default function Index({ mentors }) {
                                         <div className="p-8 flex-1">
                                             <div className="flex items-start justify-between mb-4">
                                                 <div className="flex items-center space-x-4">
-                                                    <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center font-bold text-xl shadow-inner">
+                                                    <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center font-bold text-xl shadow-inner">
                                                         {mentor.name.charAt(0)}
                                                     </div>
                                                     <div>
@@ -140,7 +140,7 @@ export default function Index({ mentors }) {
                                                     <div className="text-amber-500 text-sm font-bold">⭐ {mentor.rating}</div>
                                                 </div>
                                             </div>
-                                            <p className="text-emerald-600 font-semibold text-sm mb-1">{mentor.expertise}</p>
+                                            <p className="text-blue-600 font-semibold text-sm mb-1">{mentor.expertise}</p>
                                             <p className="text-xs text-gray-400 mb-5">📍 {mentor.location}</p>
                                             <div className="space-y-2">
                                                 <div className="flex justify-between items-center mb-2">
@@ -150,7 +150,7 @@ export default function Index({ mentors }) {
                                                 {mentor.programs?.slice(0, 2).map(p => (
                                                     <div key={p.id} className="bg-gray-50 border border-gray-100 px-3 py-2.5 rounded-xl flex justify-between items-center">
                                                         <span className="text-xs font-semibold text-gray-800 truncate pr-2">{p.title}</span>
-                                                        <span className="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-md whitespace-nowrap">{p.price}</span>
+                                                        <span className="text-xs bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-md whitespace-nowrap">{p.price}</span>
                                                     </div>
                                                 ))}
                                                 {mentor.programs?.length > 2 && (
@@ -159,8 +159,8 @@ export default function Index({ mentors }) {
                                             </div>
                                         </div>
                                         <div className="px-8 py-4 border-t border-gray-100 bg-gray-50 flex justify-between items-center">
-                                            <span className="text-sm text-gray-400 font-medium group-hover:text-emerald-600 transition">Lihat Profil →</span>
-                                            <span className="bg-gray-900 text-white px-5 py-2 rounded-full text-sm font-bold group-hover:bg-emerald-600 transition">Booking</span>
+                                            <span className="text-sm text-gray-400 font-medium group-hover:text-blue-600 transition">Lihat Profil →</span>
+                                            <span className="bg-gray-900 text-white px-5 py-2 rounded-full text-sm font-bold group-hover:bg-blue-600 transition">Booking</span>
                                         </div>
                                     </div>
                                 </Link>
