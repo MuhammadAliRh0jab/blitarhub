@@ -1,123 +1,275 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\Talent;
+use App\Models\Mentor;
+use App\Models\Campaign;
 
 // ─────────────────────────────────────────────
-//  TALENTS (12 entries)
-// ─────────────────────────────────────────────
-$dummyTalents = [
-    ['id'=>1,'name'=>'Budi Santoso','headline'=>'Senior React Developer','location'=>'Blitar, Jawa Timur','rating'=>4.9,'reviews'=>124,'jobs_completed'=>87,'connections'=>500,'skills'=>['React','Node.js','Tailwind','TypeScript','PostgreSQL'],'about'=>"Software Engineer 5+ tahun. Fokus membangun UI yang cepat dan scalable.\n\nTerbuka untuk freelance, kolaborasi startup, dan konsultasi teknis.",'experience'=>[['role'=>'Senior Frontend Engineer','company'=>'Tokopedia','period'=>'Jan 2023 – Kini','desc'=>'Memimpin tim 5 engineer, meningkatkan performa 40%.'],['role'=>'Frontend Developer','company'=>'Bukalapak','period'=>'Mar 2021 – Des 2022','desc'=>'Membangun UI library internal untuk 12 squad.']],'education'=>[['institution'=>'Universitas Brawijaya','degree'=>'S1 Teknik Informatika','year'=>'2015–2019','gpa'=>'3.78'],['institution'=>'SMAN 1 Blitar','degree'=>'IPA','year'=>'2012–2015','gpa'=>null]],'achievements'=>[['icon'=>'🏆','title'=>'Juara 1 Hackathon Nasional BRI','issuer'=>'Bank BRI','year'=>'2023'],['icon'=>'📜','title'=>'AWS Certified Solutions Architect','issuer'=>'AWS','year'=>'2022']],'projects'=>[['emoji'=>'🛒','name'=>'TokoKu E-Commerce','desc'=>'Platform e-commerce full-stack dengan Midtrans.','tech'=>['React','Node.js','PostgreSQL']],['emoji'=>'📊','name'=>'DashboardPro','desc'=>'Dashboard analitik real-time untuk UMKM.','tech'=>['Next.js','Chart.js','Supabase']]],'client_reviews'=>[['name'=>'Rizky Aditya','stars'=>5,'comment'=>'Budi bekerja cepat, selesai sebelum deadline!'],['name'=>'Sari Indah','stars'=>5,'comment'=>'Komunikasi sangat baik. Highly recommended.']]],
-    ['id'=>2,'name'=>'Siti Rahmawati','headline'=>'UI/UX Designer','location'=>'Jakarta, Indonesia','rating'=>5.0,'reviews'=>89,'jobs_completed'=>45,'connections'=>380,'skills'=>['Figma','Prototyping','User Research','Design System','Framer'],'about'=>"Product Designer eks-Gojek. Spesialis conversion-focused design.\n\nTerbuka untuk redesign aplikasi dan konsultasi desain.",'experience'=>[['role'=>'Senior Product Designer','company'=>'Gojek','period'=>'Jan 2021 – Mar 2024','desc'=>'Redesign GoPay flow, meningkatkan conversion 25%.']],'education'=>[['institution'=>'Institut Teknologi Bandung','degree'=>'S1 Desain Komunikasi Visual','year'=>'2015–2019','gpa'=>'3.85']],'achievements'=>[['icon'=>'🏆','title'=>'Best Design Award UXindo 2023','issuer'=>'UX Indonesia','year'=>'2023']],'projects'=>[['emoji'=>'💳','name'=>'GoPay Redesign','desc'=>'Redesign flow pembayaran 50 juta pengguna.','tech'=>['Figma','Principle']]],'client_reviews'=>[['name'=>'Ahmad Fikri','stars'=>5,'comment'=>'Conversion naik drastis setelah redesign!']]],
-    ['id'=>3,'name'=>'Kevin Sanjaya','headline'=>'Backend Engineer (Go/Laravel)','location'=>'Surabaya, Indonesia','rating'=>4.8,'reviews'=>56,'jobs_completed'=>30,'connections'=>290,'skills'=>['Golang','Laravel','Docker','Kubernetes','gRPC'],'about'=>"Backend engineer obsesi terhadap performa dan skalabilitas.",'experience'=>[['role'=>'Backend Engineer','company'=>'Shopee','period'=>'Feb 2022 – Kini','desc'=>'Payment service 2M+ transaksi/hari.']],'education'=>[['institution'=>'ITS Surabaya','degree'=>'S1 Teknik Informatika','year'=>'2016–2020','gpa'=>'3.72']],'achievements'=>[['icon'=>'📜','title'=>'Certified Kubernetes Administrator','issuer'=>'CNCF','year'=>'2023']],'projects'=>[['emoji'=>'⚡','name'=>'PaymentHub API','desc'=>'Microservice payment high-throughput.','tech'=>['Golang','gRPC','Redis']]],'client_reviews'=>[['name'=>'Dian P.','stars'=>5,'comment'=>'API super cepat dan well-tested!']]],
-    ['id'=>4,'name'=>'Dian Pratiwi','headline'=>'Digital Marketing Specialist','location'=>'Blitar, Jawa Timur','rating'=>4.9,'reviews'=>210,'jobs_completed'=>150,'connections'=>720,'skills'=>['SEO','Google Ads','Meta Ads','Copywriting','Analytics'],'about'=>"Digital marketer bersertifikat Google. Track record meningkatkan omzet klien 300%.",'experience'=>[['role'=>'Head of Digital Marketing','company'=>'Blibli','period'=>'Jun 2022 – Kini','desc'=>'Mengelola budget iklan Rp 2M/bulan, ROAS 4.5x.']],'education'=>[['institution'=>'Universitas Airlangga','degree'=>'S1 Manajemen Pemasaran','year'=>'2014–2018','gpa'=>'3.65']],'achievements'=>[['icon'=>'📜','title'=>'Google Ads Certified Professional','issuer'=>'Google','year'=>'2023']],'projects'=>[['emoji'=>'📈','name'=>'SEO Overhaul TokoLokal','desc'=>'Traffic +300% dalam 6 bulan.','tech'=>['Ahrefs','GSC','GA4']]],'client_reviews'=>[['name'=>'Bu Suminah','stars'=>5,'comment'=>'Omzet naik 3x lipat dalam 2 bulan!']]],
-    ['id'=>5,'name'=>'Agus Firmansyah','headline'=>'Mobile Developer (Flutter)','location'=>'Malang, Jawa Timur','rating'=>4.8,'reviews'=>67,'jobs_completed'=>41,'connections'=>215,'skills'=>['Flutter','Dart','Firebase','REST API','GetX'],'about'=>"Mobile developer spesialis Flutter dengan 4 tahun pengalaman. Telah publish 8 app di Play Store dan App Store.",'experience'=>[['role'=>'Flutter Developer','company'=>'Gojek','period'=>'Mar 2022 – Kini','desc'=>'Mengembangkan fitur GoFood driver app.'],['role'=>'Junior Mobile Dev','company'=>'Startup Fintech','period'=>'Jan 2020 – Feb 2022','desc'=>'Membangun aplikasi tabungan digital.']],'education'=>[['institution'=>'Universitas Negeri Malang','degree'=>'S1 Teknik Informatika','year'=>'2016–2020','gpa'=>'3.68']],'achievements'=>[['icon'=>'🏆','title'=>'Best App - Google Dev Challenge','issuer'=>'Google','year'=>'2022'],['icon'=>'📜','title'=>'Flutter Certified Developer','issuer'=>'Google','year'=>'2023']],'projects'=>[['emoji'=>'📱','name'=>'KasKita Finance App','desc'=>'Aplikasi manajemen keuangan keluarga.','tech'=>['Flutter','Firebase','Hive']],['emoji'=>'🛵','name'=>'RuteKu Navigation','desc'=>'Navigasi offline untuk area pedesaan.','tech'=>['Flutter','OpenStreetMap']]],'client_reviews'=>[['name'=>'Pak Joko','stars'=>5,'comment'=>'App-nya smooth dan bug-free. Luar biasa!'],['name'=>'Rina S.','stars'=>5,'comment'=>'Komunikatif dan hasil kerja memuaskan.']]],
-    ['id'=>6,'name'=>'Putri Ayu Lestari','headline'=>'Data Scientist & ML Engineer','location'=>'Bandung, Jawa Barat','rating'=>4.9,'reviews'=>43,'jobs_completed'=>28,'connections'=>340,'skills'=>['Python','TensorFlow','Scikit-learn','SQL','Tableau'],'about'=>"Data Scientist dengan keahlian machine learning dan analisis data besar. Eks-researcher di BRIN.",'experience'=>[['role'=>'Data Scientist','company'=>'Grab','period'=>'Jul 2022 – Kini','desc'=>'Membangun model prediksi demand driver.'],['role'=>'ML Researcher','company'=>'BRIN','period'=>'Jan 2021 – Jun 2022','desc'=>'Riset computer vision untuk agrikultur.']],'education'=>[['institution'=>'Universitas Gadjah Mada','degree'=>'S2 Ilmu Komputer','year'=>'2019–2021','gpa'=>'3.91']],'achievements'=>[['icon'=>'🏆','title'=>'Kaggle Master (Top 1%)','issuer'=>'Kaggle','year'=>'2023'],['icon'=>'📜','title'=>'TensorFlow Developer Certificate','issuer'=>'Google','year'=>'2022']],'projects'=>[['emoji'=>'🤖','name'=>'CropSense AI','desc'=>'Deteksi penyakit tanaman via foto dengan 94% akurasi.','tech'=>['TensorFlow','OpenCV','Flask']],['emoji'=>'📊','name'=>'DemandForecast','desc'=>'Prediksi permintaan logistik real-time.','tech'=>['Python','Prophet','Airflow']]],'client_reviews'=>[['name'=>'Dr. Arif','stars'=>5,'comment'=>'Modelnya sangat akurat. Publikasi kami jadi lebih kuat.'],['name'=>'StartupAI','stars'=>5,'comment'=>'Deliverable tepat waktu dan kodenya sangat rapi.']]],
-    ['id'=>7,'name'=>'Hendra Wijaya','headline'=>'DevOps & Cloud Engineer','location'=>'Jakarta, Indonesia','rating'=>4.7,'reviews'=>38,'jobs_completed'=>52,'connections'=>180,'skills'=>['AWS','Terraform','CI/CD','Linux','Ansible'],'about'=>"DevOps engineer spesialis cloud infrastructure AWS dan GCP. Membantu startup scale dari 0 ke produksi.",'experience'=>[['role'=>'Senior DevOps Engineer','company'=>'Traveloka','period'=>'Apr 2021 – Kini','desc'=>'Mengelola infrastruktur 99.99% uptime untuk 30M user.']],'education'=>[['institution'=>'Universitas Bina Nusantara','degree'=>'S1 Teknik Informatika','year'=>'2013–2017','gpa'=>'3.55']],'achievements'=>[['icon'=>'📜','title'=>'AWS Solutions Architect Professional','issuer'=>'AWS','year'=>'2023'],['icon'=>'📜','title'=>'HashiCorp Terraform Associate','issuer'=>'HashiCorp','year'=>'2022']],'projects'=>[['emoji'=>'☁️','name'=>'AutoScale Platform','desc'=>'Platform auto-scaling untuk 50+ microservices.','tech'=>['AWS','Terraform','K8s']]],'client_reviews'=>[['name'=>'CTO StartupX','stars'=>5,'comment'=>'Infrastrukturnya sangat solid dan cost-efficient.']]],
-    ['id'=>8,'name'=>'Maya Kusuma','headline'=>'Content Creator & Copywriter','location'=>'Blitar, Jawa Timur','rating'=>4.8,'reviews'=>156,'jobs_completed'=>230,'connections'=>890,'skills'=>['Copywriting','Content Strategy','SEO Writing','Social Media','Canva'],'about'=>"Copywriter berpengalaman 6 tahun. Spesialis brand storytelling dan konten viral untuk UMKM Indonesia.",'experience'=>[['role'=>'Senior Copywriter','company'=>'Ogilvy Indonesia','period'=>'Jan 2020 – Kini','desc'=>'Mengelola 20+ brand campaign nasional per tahun.']],'education'=>[['institution'=>'Universitas Padjadjaran','degree'=>'S1 Ilmu Komunikasi','year'=>'2014–2018','gpa'=>'3.72']],'achievements'=>[['icon'=>'🏆','title'=>'Citra Pariwara Gold Award','issuer'=>'Persatuan Perusahaan Periklanan Indonesia','year'=>'2022'],['icon'=>'🏆','title'=>'Best Copywriter Indonesia','issuer'=>'Marketing Association','year'=>'2023']],'projects'=>[['emoji'=>'✍️','name'=>'Kampanye Ramadan Aqua','desc'=>'Campaign viral dengan 15M views.','tech'=>['Copy','Strategy','Instagram']],['emoji'=>'📱','name'=>'UMKM Blitar Goes Digital','desc'=>'Konten sosmed untuk 30 UMKM lokal.','tech'=>['Canva','CapCut','TikTok']]],'client_reviews'=>[['name'=>'Bu Ratna UMKM','stars'=>5,'comment'=>'Maya paham betul cara bercerita yang menyentuh hati pelanggan.'],['name'=>'Brand Manager','stars'=>5,'comment'=>'Copy-nya selalu on-target dan on-time.']]],
-    ['id'=>9,'name'=>'Rizal Mahendra','headline'=>'Blockchain & Web3 Developer','location'=>'Jakarta, Indonesia','rating'=>4.9,'reviews'=>29,'jobs_completed'=>17,'connections'=>410,'skills'=>['Solidity','Ethereum','Web3.js','Hardhat','React'],'about'=>"Web3 developer spesialis smart contract dan DeFi. Pernah audit 10+ protokol dengan total TVL $50M+.",'experience'=>[['role'=>'Lead Blockchain Developer','company'=>'Tokocrypto','period'=>'Jun 2021 – Kini','desc'=>'Membangun infrastruktur NFT marketplace.']],'education'=>[['institution'=>'Institut Teknologi Bandung','degree'=>'S1 Teknik Informatika','year'=>'2015–2019','gpa'=>'3.88']],'achievements'=>[['icon'=>'🏆','title'=>'ETHGlobal Hackathon Winner','issuer'=>'Ethereum Foundation','year'=>'2022'],['icon'=>'📜','title'=>'Certified Blockchain Developer','issuer'=>'Blockchain Council','year'=>'2021']],'projects'=>[['emoji'=>'🔗','name'=>'BlitarNFT Marketplace','desc'=>'Platform NFT khusus seni batik Blitar.','tech'=>['Solidity','IPFS','Next.js']]],'client_reviews'=>[['name'=>'DeFi Protocol','stars'=>5,'comment'=>'Smart contract audit-nya sangat thorough dan aman.']]],
-    ['id'=>10,'name'=>'Indah Permatasari','headline'=>'Graphic Designer & Illustrator','location'=>'Yogyakarta, Indonesia','rating'=>4.8,'reviews'=>98,'jobs_completed'=>175,'connections'=>620,'skills'=>['Adobe Illustrator','Photoshop','Procreate','Branding','Motion Graphics'],'about'=>"Graphic designer spesialis branding dan ilustrasi digital. Telah membantu 80+ brand membangun identitas visual.",'experience'=>[['role'=>'Senior Graphic Designer','company'=>'Tokopedia','period'=>'Mar 2020 – Kini','desc'=>'Lead designer untuk campaign seasonal.'],['role'=>'Freelance Illustrator','company'=>'Self-employed','period'=>'2016 – Kini','desc'=>'Ilustrasi buku anak dan brand identity.']],'education'=>[['institution'=>'Institut Seni Indonesia Yogyakarta','degree'=>'S1 Desain Komunikasi Visual','year'=>'2014–2018','gpa'=>'3.79']],'achievements'=>[['icon'=>'🏆','title'=>'Best Indonesian Illustrator 2023','issuer'=>'Asosiasi Desainer Indonesia','year'=>'2023'],['icon'=>'🥇','title'=>'Red Dot Design Award','issuer'=>'Red Dot','year'=>'2022']],'projects'=>[['emoji'=>'🎨','name'=>'Brand Identity KopiKita','desc'=>'Identitas visual lengkap untuk chain kopi 50+ gerai.','tech'=>['Illustrator','Photoshop','InDesign']],['emoji'=>'📚','name'=>'Buku Ilustrasi Anak','desc'=>'3 buku anak yang sudah diterbitkan Gramedia.','tech'=>['Procreate','Canva']]],'client_reviews'=>[['name'=>'CEO KopiKita','stars'=>5,'comment'=>'Brand kami jadi dikenal nasional. Indah luar biasa!'],['name'=>'Penerbit Gramedia','stars'=>5,'comment'=>'Ilustrasinya memukau, anak-anak sangat suka.']]],
-    ['id'=>11,'name'=>'Farhan Azis','headline'=>'Cybersecurity Expert','location'=>'Jakarta, Indonesia','rating'=>4.9,'reviews'=>31,'jobs_completed'=>22,'connections'=>260,'skills'=>['Penetration Testing','SIEM','ISO 27001','OWASP','Burp Suite'],'about'=>"Cybersecurity consultant bersertifikat CEH dan OSCP. Spesialis vulnerability assessment dan security audit.",'experience'=>[['role'=>'Security Engineer','company'=>'Bank Central Asia','period'=>'Aug 2021 – Kini','desc'=>'Memimpin tim keamanan siber untuk 50M+ nasabah.']],'education'=>[['institution'=>'Universitas Indonesia','degree'=>'S1 Ilmu Komputer','year'=>'2016–2020','gpa'=>'3.83']],'achievements'=>[['icon'=>'📜','title'=>'OSCP - Offensive Security','issuer'=>'Offensive Security','year'=>'2022'],['icon'=>'📜','title'=>'CEH - Certified Ethical Hacker','issuer'=>'EC-Council','year'=>'2021']],'projects'=>[['emoji'=>'🔐','name'=>'BCA Security Audit','desc'=>'Audit keamanan aplikasi mobile banking.','tech'=>['Burp Suite','Metasploit','Nmap']]],'client_reviews'=>[['name'=>'CISO Fintech','stars'=>5,'comment'=>'Farhan menemukan 3 critical vulnerability yang lolos review internal.']]],
-    ['id'=>12,'name'=>'Lestari Dewi','headline'=>'Project Manager & Scrum Master','location'=>'Blitar, Jawa Timur','rating'=>4.7,'reviews'=>84,'jobs_completed'=>63,'connections'=>450,'skills'=>['Scrum','Jira','Project Planning','Stakeholder Management','Agile'],'about'=>"Project Manager bersertifikat PMP dengan 7 tahun pengalaman mengelola proyek IT skala enterprise.",'experience'=>[['role'=>'Senior Project Manager','company'=>'Telkom Indonesia','period'=>'Jan 2019 – Kini','desc'=>'Mengelola 8 proyek digital transformasi senilai Rp 50M+.']],'education'=>[['institution'=>'Universitas Brawijaya','degree'=>'S1 Sistem Informasi','year'=>'2013–2017','gpa'=>'3.70']],'achievements'=>[['icon'=>'📜','title'=>'PMP - Project Management Professional','issuer'=>'PMI','year'=>'2021'],['icon'=>'📜','title'=>'Certified Scrum Master','issuer'=>'Scrum Alliance','year'=>'2020']],'projects'=>[['emoji'=>'📋','name'=>'Digitalisasi Pemkab Blitar','desc'=>'Koordinasi 12 vendor untuk digitalisasi layanan publik.','tech'=>['Jira','Confluence','MS Project']]],'client_reviews'=>[['name'=>'Dinas IT Blitar','stars'=>5,'comment'=>'Proyek selesai tepat waktu dan sesuai anggaran.']]],
-];
-
-// ─────────────────────────────────────────────
-//  MENTORS (6 entries)
-// ─────────────────────────────────────────────
-$dummyMentors = [
-    ['id'=>1,'name'=>'Ahmad Fikri','company'=>'Tokopedia','expertise'=>'Engineering Manager','rating'=>4.9,'mentees'=>320,'location'=>'Jakarta, Indonesia','about'=>"Engineering Manager di Tokopedia dengan 10+ tahun pengalaman. Telah membimbing ratusan engineer dari junior hingga tech lead.\n\nMisi saya: membantu talenta Indonesia bersaing di level global.",'experience'=>[['role'=>'Engineering Manager','company'=>'Tokopedia','period'=>'2020 – Kini','desc'=>'Mengelola 3 squad (15 engineer) divisi seller platform.'],['role'=>'Senior Software Engineer','company'=>'Bukalapak','period'=>'2017 – 2020','desc'=>'Arsitektur microservices untuk sistem pembayaran.']],'education'=>[['institution'=>'Universitas Indonesia','degree'=>'S1 Ilmu Komputer','year'=>'2010–2014','gpa'=>'3.82']],'achievements'=>[['icon'=>'🏆','title'=>'Top 50 Tech Leaders Indonesia','issuer'=>'Tech in Asia','year'=>'2024'],['icon'=>'📜','title'=>'Google Cloud Professional Architect','issuer'=>'Google','year'=>'2022']],'programs'=>[['id'=>1,'title'=>'1-on-1 Career Coaching','price'=>'Rp 250.000','desc'=>'60 menit: CV review, interview prep, career path di dunia tech.','duration'=>'60 menit','format'=>'Video Call','enrolled'=>185],['id'=>2,'title'=>'System Design Mastery','price'=>'Rp 500.000','desc'=>'Rancang sistem untuk jutaan pengguna. Hands-on whiteboard session.','duration'=>'90 menit','format'=>'Video Call + Whiteboard','enrolled'=>92],['id'=>3,'title'=>'Engineering Leadership Bootcamp','price'=>'Rp 1.500.000','desc'=>'4 sesi: people management, sprint planning, stakeholder communication.','duration'=>'4x 90 menit','format'=>'Cohort-based','enrolled'=>43]],'testimonials'=>[['name'=>'Rina Susanti','role'=>'Software Engineer at Shopee','stars'=>5,'comment'=>'Dapat offer Shopee dengan gaji 2x lipat setelah sesi career coaching!'],['name'=>'Hendra W.','role'=>'Tech Lead at Gojek','stars'=>5,'comment'=>'System Design Mastery benar-benar membuka wawasan.'],['name'=>'Dewi Anggraini','role'=>'Engineering Manager at Blibli','stars'=>5,'comment'=>'Leadership Bootcamp sangat membantu transisi dari IC ke manager.']]],
-    ['id'=>2,'name'=>'Jessica Wongso','company'=>'Shopee','expertise'=>'VP of Product','rating'=>5.0,'mentees'=>150,'location'=>'Singapore','about'=>"VP of Product di Shopee. 8 tahun di product management. Membangun product team dari nol di dua unicorn.",'experience'=>[['role'=>'VP of Product','company'=>'Shopee','period'=>'2022 – Kini','desc'=>'Memimpin product strategy untuk Shopee Mall.'],['role'=>'Head of Product','company'=>'OVO','period'=>'2019 – 2022','desc'=>'Membangun product team dari 3 menjadi 25 orang.']],'education'=>[['institution'=>'NUS Singapore','degree'=>'MBA','year'=>'2017–2019','gpa'=>'3.9']],'achievements'=>[['icon'=>'🏆','title'=>'Forbes 30 Under 30 SEA','issuer'=>'Forbes','year'=>'2021']],'programs'=>[['id'=>4,'title'=>'Product Management 101','price'=>'Gratis','desc'=>'Perkenalan PM untuk fresh graduate.','duration'=>'45 menit','format'=>'Video Call','enrolled'=>120],['id'=>5,'title'=>'PM Career Accelerator','price'=>'Rp 750.000','desc'=>'3 sesi intensif: mock interview, portfolio review, career path.','duration'=>'3x 60 menit','format'=>'Cohort-based','enrolled'=>30]],'testimonials'=>[['name'=>'Anisa Larasati','role'=>'Product Manager at Tokopedia','stars'=>5,'comment'=>'Jessica sangat inspiring! Materi PM-nya sangat relevan.'],['name'=>'Bayu P.','role'=>'APM at Gojek','stars'=>5,'comment'=>'Berhasil pivot dari engineering ke PM setelah ikut program ini.']]],
-    ['id'=>3,'name'=>'Reza Rahardian','company'=>'Investree','expertise'=>'CTO & Startup Advisor','rating'=>4.8,'mentees'=>85,'location'=>'Jakarta, Indonesia','about'=>"CTO Investree dan serial entrepreneur. Passion membantu founder startup validasi ide dan bangun tech team solid.",'experience'=>[['role'=>'CTO','company'=>'Investree','period'=>'2020 – Kini','desc'=>'Platform fintech lending, 500K+ borrower.'],['role'=>'Co-Founder & CTO','company'=>'TechStartup (Exit $5M)','period'=>'2016 – 2020','desc'=>'Bangun dan exit SaaS startup.']],'education'=>[['institution'=>'Stanford University','degree'=>'MS Computer Science','year'=>'2012–2014','gpa'=>'3.88']],'achievements'=>[['icon'=>'🏆','title'=>'Startup Indonesia Award - Best CTO','issuer'=>'BUMN','year'=>'2023']],'programs'=>[['id'=>6,'title'=>'Startup Tech Validation','price'=>'Rp 400.000','desc'=>'Validasi tech stack startup sebelum pitching ke VC.','duration'=>'60 menit','format'=>'Video Call','enrolled'=>65],['id'=>7,'title'=>'From Zero to MVP','price'=>'Rp 2.000.000','desc'=>'6 sesi: ideation → tech stack → deploy MVP pertama Anda.','duration'=>'6x 90 menit','format'=>'Cohort + Hands-on','enrolled'=>20]],'testimonials'=>[['name'=>'Fajar Nugroho','role'=>'Founder PasarKu','stars'=>5,'comment'=>'MVP kami jadi dalam 3 bulan berkat Reza!'],['name'=>'Maya Sari','role'=>'CEO EduTech Startup','stars'=>4,'comment'=>'Sesi validasinya sangat membantu saat pitching investor.']]],
-    ['id'=>4,'name'=>'Dr. Amelia Hartono','company'=>'Universitas Indonesia','expertise'=>'Academic & Research Mentor','rating'=>4.9,'mentees'=>95,'location'=>'Depok, Jawa Barat','about'=>"Dosen UI sekaligus peneliti aktif. Telah membimbing 40+ mahasiswa S2/S3 dan membantu publikasi di jurnal Q1.",'experience'=>[['role'=>'Associate Professor','company'=>'Universitas Indonesia','period'=>'2015 – Kini','desc'=>'Mengajar Machine Learning dan Data Mining.'],['role'=>'Postdoctoral Researcher','company'=>'MIT (USA)','period'=>'2013 – 2015','desc'=>'Riset natural language processing.']],'education'=>[['institution'=>'MIT','degree'=>'PhD Computer Science','year'=>'2009–2013','gpa'=>'4.0']],'achievements'=>[['icon'=>'🏆','title'=>'Best Paper Award ICML 2022','issuer'=>'ICML','year'=>'2022'],['icon'=>'📜','title'=>'Guru Besar Termuda UI 2023','issuer'=>'Universitas Indonesia','year'=>'2023']],'programs'=>[['id'=>8,'title'=>'Academic Writing & Publikasi','price'=>'Rp 300.000','desc'=>'Bimbingan menulis paper untuk jurnal internasional (Scopus/Q1).','duration'=>'60 menit','format'=>'Video Call','enrolled'=>72],['id'=>9,'title'=>'Research Methodology','price'=>'Rp 450.000','desc'=>'Dari perumusan masalah research hingga analisis data.','duration'=>'90 menit','format'=>'Video Call + Review','enrolled'=>38]],'testimonials'=>[['name'=>'Budi (Mahasiswa S2)','role'=>'Mahasiswa S2 Ilmu Komputer UI','stars'=>5,'comment'=>'Paper saya diterima di jurnal Q1 berkat bimbingan Dr. Amelia!'],['name'=>'Fitri Ramadhani','role'=>'Dosen Politeknik','stars'=>5,'comment'=>'Metodologinya sangat sistematis dan mudah dipahami.']]],
-    ['id'=>5,'name'=>'Santoso Budiman','company'=>'McKinsey & Company','expertise'=>'Business Strategy Consultant','rating'=>4.9,'mentees'=>60,'location'=>'Jakarta, Indonesia','about'=>"Senior Consultant di McKinsey dengan fokus digital transformation dan business strategy untuk perusahaan Fortune 500 Asia.",'experience'=>[['role'=>'Senior Consultant','company'=>'McKinsey & Company','period'=>'2018 – Kini','desc'=>'Konsultasi untuk 20+ perusahaan BUMN dan swasta.'],['role'=>'Business Analyst','company'=>'Boston Consulting Group','period'=>'2015 – 2018','desc'=>'Analisis pasar dan strategi ekspansi bisnis.']],'education'=>[['institution'=>'Harvard Business School','degree'=>'MBA','year'=>'2013–2015','gpa'=>'3.95']],'achievements'=>[['icon'=>'🏆','title'=>'Top 10 Consultants Asia-Pacific','issuer'=>'Consulting Magazine','year'=>'2023'],['icon'=>'📜','title'=>'CFA Level III','issuer'=>'CFA Institute','year'=>'2017']],'programs'=>[['id'=>10,'title'=>'Business Plan Review','price'=>'Rp 600.000','desc'=>'Review dan perbaikan business plan untuk startup atau UMKM.','duration'=>'90 menit','format'=>'Video Call + Dokumen','enrolled'=>45],['id'=>11,'title'=>'Strategy for Entrepreneurs','price'=>'Rp 1.000.000','desc'=>'Modul strategi bisnis 3 sesi untuk founder yang ingin scale.','duration'=>'3x 90 menit','format'=>'Cohort-based','enrolled'=>25]],'testimonials'=>[['name'=>'CEO Startup B2B','stars'=>5,'role'=>'CEO B2B SaaS','comment'=>'Santoso membantu kami pivot strategy dan akhirnya dapat Series A!'],['name'=>'Pengusaha Kuliner','stars'=>5,'role'=>'Owner Resto Chain','comment'=>'Business plan kami jadi jauh lebih solid setelah direview.']]],
-    ['id'=>6,'name'=>'Yuni Kartika','company'=>'Google','expertise'=>'UX Research Lead','rating'=>5.0,'mentees'=>45,'location'=>'Singapore','about'=>"UX Research Lead di Google Asia Pacific. Membantu perusahaan memahami pengguna mereka secara mendalam melalui riset yang tepat sasaran.",'experience'=>[['role'=>'UX Research Lead','company'=>'Google','period'=>'2020 – Kini','desc'=>'Memimpin riset untuk produk Google Maps Asia.'],['role'=>'Senior UX Researcher','company'=>'Facebook','period'=>'2017 – 2020','desc'=>'Riset pengguna untuk Facebook Marketplace SEA.']],'education'=>[['institution'=>'Carnegie Mellon University','degree'=>'MS Human-Computer Interaction','year'=>'2015–2017','gpa'=>'3.93']],'achievements'=>[['icon'=>'🏆','title'=>'CHI Best Paper Award','issuer'=>'ACM','year'=>'2023'],['icon'=>'📜','title'=>'Google Research Excellence Award','issuer'=>'Google','year'=>'2022']],'programs'=>[['id'=>12,'title'=>'UX Research Fundamentals','price'=>'Rp 350.000','desc'=>'Cara melakukan user interview, usability testing, dan analisis data.','duration'=>'75 menit','format'=>'Video Call','enrolled'=>55],['id'=>13,'title'=>'Research for Product Teams','price'=>'Rp 800.000','desc'=>'Workshop 2 sesi: embed research di agile product team.','duration'=>'2x 90 menit','format'=>'Workshop Online','enrolled'=>18]],'testimonials'=>[['name'=>'Ahsan PM','role'=>'Product Manager','stars'=>5,'comment'=>'Setelah sesi ini, kami jauh lebih user-centric dalam setiap keputusan produk.'],['name'=>'Diana Designer','role'=>'UX Designer','stars'=>5,'comment'=>'Riset yang tepat membuat desain saya jauh lebih impactful.']]],
-];
-
-// ─────────────────────────────────────────────
-//  CAMPAIGNS (5 entries)
-// ─────────────────────────────────────────────
-$dummyCampaigns = [
-    ['id'=>1,'title'=>'Beasiswa Pendidikan S1 Teknik UB','target_amount'=>50000000,'current_amount'=>42500000,'beneficiary'=>'Rahmat Hidayat','donors'=>1240,'days_left'=>5,'description'=>"Rahmat Hidayat adalah mahasiswa berprestasi dari keluarga kurang mampu di Blitar. Ayahnya bekerja sebagai buruh tani.\n\nDana untuk biaya kuliah semester 5–8, biaya hidup, dan laptop.",'organizer'=>'Yayasan Pendidikan Blitar Cerdas','category'=>'Pendidikan Tinggi','updates'=>[['date'=>'2 Apr 2026','text'=>'Dana sudah 85% dari target. Rahmat mengucapkan terima kasih!'],['date'=>'28 Mar 2026','text'=>'UKT semester 5 sudah dilunasi.'],['date'=>'15 Mar 2026','text'=>'Campaign resmi dimulai.']],'donor_list'=>[['name'=>'Haji Rahmat','amount'=>5000000,'time'=>'2 jam lalu','message'=>'Semangat nak! Semoga ilmunya berkah.'],['name'=>'Ibu Suminah','amount'=>2000000,'time'=>'5 jam lalu','message'=>'Insya Allah lancar kuliahnya.'],['name'=>'Anonim','amount'=>500000,'time'=>'1 hari lalu','message'=>null],['name'=>'Rizky Aditya','amount'=>1000000,'time'=>'1 hari lalu','message'=>'Sukses selalu Rahmat!'],['name'=>'PT Sinotek Digital','amount'=>10000000,'time'=>'3 hari lalu','message'=>'Kami mendukung pendidikan anak Blitar.'],['name'=>'Anonim','amount'=>250000,'time'=>'4 hari lalu','message'=>null],['name'=>'Bu Kartini','amount'=>1500000,'time'=>'5 hari lalu','message'=>'Semoga menjadi sarjana berguna.'],['name'=>'Pak Bambang','amount'=>750000,'time'=>'1 minggu lalu','message'=>'Lanjutkan perjuanganmu!']]],
-    ['id'=>2,'title'=>'Bantu Pembangunan Atap PAUD Melati','target_amount'=>20000000,'current_amount'=>18000000,'beneficiary'=>'PAUD Melati Desa Sanan','donors'=>850,'days_left'=>12,'description'=>"PAUD Melati di Desa Sanan butuh renovasi atap yang sudah bocor parah. Saat hujan, kegiatan belajar terpaksa dihentikan.\n\nDana untuk penggantian rangka atap dan genteng baru.",'organizer'=>'Komunitas Peduli Blitar','category'=>'Infrastruktur Pendidikan','updates'=>[['date'=>'1 Apr 2026','text'=>'Material atap sudah dibeli. Pembangunan dimulai minggu depan!'],['date'=>'20 Mar 2026','text'=>'Survei lokasi bersama kontraktor sudah dilakukan.']],'donor_list'=>[['name'=>'Pak Lurah Sanan','amount'=>3000000,'time'=>'3 jam lalu','message'=>'Untuk anak-anak desa kami.'],['name'=>'Anonim','amount'=>1000000,'time'=>'1 hari lalu','message'=>'Semoga berkah.'],['name'=>'Karang Taruna RT 05','amount'=>2500000,'time'=>'2 hari lalu','message'=>'Dari pemuda-pemudi RT 05!'],['name'=>'Bu Endang','amount'=>500000,'time'=>'4 hari lalu','message'=>'Kasihan anak-anak kalau hujan.'],['name'=>'Anonim','amount'=>200000,'time'=>'5 hari lalu','message'=>null]]],
-    ['id'=>3,'title'=>'Laptop untuk Siswa OSN Blitar','target_amount'=>8000000,'current_amount'=>2000000,'beneficiary'=>'Siti Nurhaliza','donors'=>45,'days_left'=>20,'description'=>"Siti Nurhaliza, siswi SMAN 1 Blitar peraih Juara 1 OSN Informatika, belum memiliki laptop sendiri. Selama ini ia meminjam laptop guru.\n\nDengan laptop baru, Siti bisa berlatih untuk kompetisi internasional.",'organizer'=>'Alumni SMAN 1 Blitar','category'=>'Peralatan Belajar','updates'=>[['date'=>'3 Apr 2026','text'=>'Campaign baru dimulai! Siti sangat berterima kasih.']],'donor_list'=>[['name'=>'Alumni Angkatan 2020','amount'=>1000000,'time'=>'6 jam lalu','message'=>'Bangga punya adik kelas juara OSN!'],['name'=>'Anonim','amount'=>500000,'time'=>'1 hari lalu','message'=>'Go Siti! Harumkan nama Blitar!'],['name'=>'Pak Guru Informatika','amount'=>300000,'time'=>'2 hari lalu','message'=>'Dari guru yang mengajarmu.']]],
-    ['id'=>4,'title'=>'Beasiswa D3 Keperawatan Anak Yatim','target_amount'=>15000000,'current_amount'=>11200000,'beneficiary'=>'Muhamad Faizal','donors'=>630,'days_left'=>8,'description'=>"Faizal, yatim piatu sejak usia 8 tahun, kini ingin melanjutkan pendidikan di D3 Keperawatan Poltekkes Malang.\n\nDana untuk UKT 3 tahun, seragam, dan alat praktik keperawatan.",'organizer'=>'Yayasan Rumah Harapan Blitar','category'=>'Pendidikan Vokasi','updates'=>[['date'=>'4 Apr 2026','text'=>'74% target tercapai! Mari bantu Faizal menyelesaikan pendidikannya.'],['date'=>'25 Mar 2026','text'=>'Faizal diterima di Poltekkes Malang. Alhamdulillah!']],'donor_list'=>[['name'=>'Yayasan Baitul Maal','amount'=>5000000,'time'=>'1 jam lalu','message'=>'Amanah dari para donatur kami.'],['name'=>'Komunitas Muslimah Blitar','amount'=>2000000,'time'=>'4 jam lalu','message'=>'Semangat menuntut ilmu, Faizal!'],['name'=>'Anonim','amount'=>500000,'time'=>'12 jam lalu','message'=>null],['name'=>'Pak RT Kepanjen','amount'=>1000000,'time'=>'2 hari lalu','message'=>'Dari warga RT 03, semangat!'],['name'=>'Anonim','amount'=>300000,'time'=>'3 hari lalu','message'=>null],['name'=>'Bu Haji Siti','amount'=>1500000,'time'=>'5 hari lalu','message'=>'Semoga ilmunya bermanfaat untuk sesama.']]],
-    ['id'=>5,'title'=>'Renovasi Perpustakaan SDN Nglegok','target_amount'=>30000000,'current_amount'=>7500000,'beneficiary'=>'SDN Nglegok 1 Blitar','donors'=>180,'days_left'=>30,'description'=>"Perpustakaan SDN Nglegok 1 rusak parah akibat banjir 2025. Ratusan buku rusak dan rak hancur.\n\nDana untuk renovasi ruangan, rak buku baru, dan pengadaan 500+ buku bacaan anak.",'organizer'=>'Dinas Pendidikan Kab. Blitar','category'=>'Infrastruktur Pendidikan','updates'=>[['date'=>'1 Apr 2026','text'=>'25% target tercapai dalam 2 minggu pertama. Luar biasa semangat para donatur!'],['date'=>'18 Mar 2026','text'=>'Campaign resmi diluncurkan bersama Bupati Blitar.']],'donor_list'=>[['name'=>'PT Bank Jatim','amount'=>5000000,'time'=>'1 hari lalu','message'=>'Investasi kami untuk masa depan anak Blitar.'],['name'=>'Anonim','amount'=>500000,'time'=>'2 hari lalu','message'=>null],['name'=>'DPRD Kab. Blitar','amount'=>2000000,'time'=>'3 hari lalu','message'=>'Untuk generasi penerus bangsa.'],['name'=>'Guru-guru SDN Nglegok','amount'=>200000,'time'=>'4 hari lalu','message'=>'Dari Bapak/Ibu guru yang peduli.']]],
-];
-
-// ─────────────────────────────────────────────
-//  ROUTES
+//  HELPER MAPPERS
 // ─────────────────────────────────────────────
 
-Route::get('/', function () use ($dummyTalents, $dummyMentors, $dummyCampaigns) {
-    $talentSummary = array_map(fn($t) => [
-        'id'=>$t['id'],'name'=>$t['name'],'headline'=>$t['headline'],
-        'rating'=>$t['rating'],'jobs_completed'=>$t['jobs_completed'],'skills'=>$t['skills'],
-    ], $dummyTalents);
-    $mentorSummary = array_map(fn($m) => [
-        'id'=>$m['id'],'name'=>$m['name'],'company'=>$m['company'],
-        'expertise'=>$m['expertise'],'rating'=>$m['rating'],'mentees'=>$m['mentees'],
-    ], $dummyMentors);
-    $campaignSummary = array_map(fn($c) => [
-        'id'=>$c['id'],'title'=>$c['title'],'target_amount'=>$c['target_amount'],
-        'current_amount'=>$c['current_amount'],'beneficiary'=>$c['beneficiary'],
-        'donors'=>$c['donors'],'days_left'=>$c['days_left'],
-    ], $dummyCampaigns);
+function mapTalent($t) {
+    if (!$t) return null;
+    return [
+        'id' => $t->id,
+        'user_id' => $t->user_id,
+        'name' => $t->user->name ?? 'Unknown',
+        'avatar_url' => $t->user->avatar_url ?? null,
+        'cover_url' => $t->cover_url ?? null,
+        'cv_url' => $t->cv_url ?? null,
+        'portfolio_url' => $t->portfolio_url ?? null,
+        'headline' => $t->headline ?? '',
+        'location' => $t->location ?? '',
+        'rating' => (float) ($t->rating ?? 0),
+        'reviews' => $t->reviews_count ?? 0,
+        'jobs_completed' => $t->jobs_completed ?? 0,
+        'connections' => $t->connections ?? 0,
+        'skills' => $t->skills ? $t->skills->pluck('name')->toArray() : [],
+        'about' => $t->bio ?? '',
+        'experience' => $t->experiences ? $t->experiences->map(fn($e) => [
+            'id' => $e->id, 'role' => $e->role, 'company' => $e->company,
+            'period' => $e->start_date . ' - ' . ($e->is_current ? 'Kini' : $e->end_date),
+            'desc' => $e->description
+        ])->toArray() : [],
+        'education' => $t->educations ? $t->educations->map(fn($e) => [
+            'id' => $e->id, 'institution' => $e->institution, 'degree' => $e->degree,
+            'year' => $e->start_year . ' - ' . $e->end_year, 'gpa' => $e->gpa
+        ])->toArray() : [],
+        'achievements' => $t->achievements ? $t->achievements->map(fn($a) => [
+            'id' => $a->id, 'icon' => $a->emoji ?? '🏆', 'title' => $a->title,
+            'issuer' => $a->issuer, 'year' => $a->year
+        ])->toArray() : [],
+        'projects' => $t->projects ? $t->projects->map(fn($p) => [
+            'id' => $p->id, 'emoji' => $p->emoji ?? '💼', 'name' => $p->name,
+            'desc' => $p->description, 'tech' => is_string($p->tech) ? json_decode($p->tech, true) : ($p->tech ?? []),
+            'documentation_photos' => is_string($p->documentation_photos) ? json_decode($p->documentation_photos, true) : ($p->documentation_photos ?? [])
+        ])->toArray() : [],
+        'client_reviews' => $t->clientReviews ? $t->clientReviews->map(fn($r) => [
+            'id' => $r->id, 'name' => $r->reviewer_name, 'stars' => $r->stars, 'comment' => $r->comment
+        ])->toArray() : [],
+    ];
+}
+
+function mapMentor($m) {
+    if (!$m) return null;
+    return [
+        'id' => $m->id,
+        'user_id' => $m->user_id,
+        'name' => $m->user->name ?? 'Unknown',
+        'avatar_url' => $m->user->avatar_url ?? null,
+        'cover_url' => $m->cover_url ?? null,
+        'linkedin_url' => $m->linkedin_url ?? null,
+        'company' => $m->company ?? '',
+        'expertise' => $m->expertise ?? '',
+        'location' => $m->location ?? '',
+        'rating' => (float) ($m->rating ?? 0),
+        'mentees' => $m->mentees_count ?? 0,
+        'about' => $m->bio ?? '',
+        'experience' => $m->experiences ? $m->experiences->map(fn($e) => [
+            'id' => $e->id, 'role' => $e->role, 'company' => $e->company,
+            'period' => $e->start_date . ' - ' . ($e->is_current ? 'Kini' : $e->end_date),
+            'desc' => $e->description
+        ])->toArray() : [],
+        'education' => $m->educations ? $m->educations->map(fn($e) => [
+            'id' => $e->id, 'institution' => $e->institution, 'degree' => $e->degree,
+            'year' => $e->start_year . ' - ' . $e->end_year, 'gpa' => $e->gpa
+        ])->toArray() : [],
+        'achievements' => $m->achievements ? $m->achievements->map(fn($a) => [
+            'id' => $a->id, 'icon' => $a->emoji ?? '🏆', 'title' => $a->title,
+            'issuer' => $a->issuer, 'year' => $a->year
+        ])->toArray() : [],
+        'programs' => $m->programs ? $m->programs->map(fn($p) => [
+            'id' => $p->id, 'title' => $p->title, 'price' => is_numeric($p->price) ? 'Rp ' . number_format($p->price, 0, ',', '.') : $p->price,
+            'desc' => $p->description, 'duration' => $p->duration, 'format' => $p->format, 'enrolled' => $p->enrolled
+        ])->toArray() : [],
+        'testimonials' => $m->testimonials ? $m->testimonials->map(fn($t) => [
+            'id' => $t->id, 'name' => $t->name, 'role' => $t->role ?? '',
+            'stars' => $t->stars, 'comment' => $t->comment
+        ])->toArray() : [],
+    ];
+}
+
+function mapCampaign($c) {
+    if (!$c) return null;
+    return [
+        'id' => $c->id,
+        'title' => $c->title,
+        'target_amount' => $c->target_amount,
+        'current_amount' => $c->current_amount,
+        'beneficiary' => $c->beneficiary,
+        'organizer' => $c->organizer,
+        'category' => $c->category,
+        'donors' => $c->donors_count ?? 0,
+        'days_left' => $c->days_left ?? 0,
+        'description' => $c->description,
+        'updates' => $c->updates ? $c->updates->map(fn($u) => [
+            'id' => $u->id, 'date' => $u->created_at->format('d M Y'), 'text' => $u->content
+        ])->toArray() : [],
+        'donor_list' => $c->donations ? $c->donations->map(fn($d) => [
+            'id' => $d->id, 'name' => $d->donor_name, 'amount' => $d->amount,
+            'time' => $d->created_at->diffForHumans(), 'message' => $d->message
+        ])->toArray() : [],
+    ];
+}
+
+// ─────────────────────────────────────────────
+//  PUBLIC ROUTES
+// ─────────────────────────────────────────────
+
+Route::get('/', function () {
+    $talents = Talent::with(['user', 'skills'])->take(6)->get()->map(fn($t) => mapTalent($t))->values()->toArray();
+    $mentors = Mentor::with(['user'])->take(6)->get()->map(fn($m) => mapMentor($m))->values()->toArray();
+    $campaigns = Campaign::take(3)->get()->map(fn($c) => mapCampaign($c))->values()->toArray();
+
     return Inertia::render('Welcome', [
-        'featuredTalents'  => $talentSummary,
-        'featuredMentors'  => $mentorSummary,
-        'activeCampaigns'  => $campaignSummary,
+        'featuredTalents'  => $talents,
+        'featuredMentors'  => $mentors,
+        'activeCampaigns'  => $campaigns,
     ]);
 })->name('home');
 
-Route::get('/talents', function () use ($dummyTalents) {
-    $summary = array_map(fn($t) => [
-        'id'=>$t['id'],'name'=>$t['name'],'headline'=>$t['headline'],
-        'location'=>$t['location'],'rating'=>$t['rating'],'reviews'=>$t['reviews'],
-        'jobs_completed'=>$t['jobs_completed'],'skills'=>$t['skills'],
-    ], $dummyTalents);
-    return Inertia::render('Talents/Index', ['talents' => $summary]);
+Route::get('/talents', function () {
+    $talents = Talent::with(['user', 'skills'])->get()->map(fn($t) => mapTalent($t))->values()->toArray();
+    return Inertia::render('Talents/Index', ['talents' => $talents]);
 })->name('talents.index');
 
-Route::get('/talents/{id}', function ($id) use ($dummyTalents) {
-    $talent = collect($dummyTalents)->firstWhere('id', (int)$id);
-    if (!$talent) abort(404);
-    return Inertia::render('Talents/Show', ['talent' => $talent]);
+Route::get('/talents/{id}', function ($id) {
+    $t = Talent::with(['user', 'skills', 'experiences', 'educations', 'achievements', 'projects', 'clientReviews'])->findOrFail($id);
+    return Inertia::render('Talents/Show', ['talent' => mapTalent($t)]);
 })->name('talents.show');
 
-Route::get('/mentorships', function () use ($dummyMentors) {
-    $summary = array_map(fn($m) => [
-        'id'=>$m['id'],'name'=>$m['name'],'company'=>$m['company'],'location'=>$m['location'],
-        'expertise'=>$m['expertise'],'rating'=>$m['rating'],'mentees'=>$m['mentees'],
-        'programs'=>array_map(fn($p) => [
-            'id'=>$p['id'],'title'=>$p['title'],'price'=>$p['price'],'desc'=>$p['desc'],
-        ], $m['programs']),
-    ], $dummyMentors);
-    return Inertia::render('Mentorships/Index', ['mentors' => $summary]);
+Route::get('/mentorships', function () {
+    $mentors = Mentor::with(['user', 'programs'])->get()->map(fn($m) => mapMentor($m))->values()->toArray();
+    return Inertia::render('Mentorships/Index', ['mentors' => $mentors]);
 })->name('mentorships.index');
 
-Route::get('/mentorships/{id}', function ($id) use ($dummyMentors) {
-    $mentor = collect($dummyMentors)->firstWhere('id', (int)$id);
-    if (!$mentor) abort(404);
-    return Inertia::render('Mentorships/Show', ['mentor' => $mentor]);
+Route::get('/mentorships/{id}', function ($id) {
+    $m = Mentor::with(['user', 'programs', 'experiences', 'educations', 'achievements', 'testimonials'])->findOrFail($id);
+    return Inertia::render('Mentorships/Show', ['mentor' => mapMentor($m)]);
 })->name('mentorships.show');
 
-Route::get('/scholarships', function () use ($dummyCampaigns) {
-    $summary = array_map(fn($c) => [
-        'id'=>$c['id'],'title'=>$c['title'],'target_amount'=>$c['target_amount'],
-        'current_amount'=>$c['current_amount'],'beneficiary'=>$c['beneficiary'],
-        'donors'=>$c['donors'],'days_left'=>$c['days_left'],'category'=>$c['category'],
-    ], $dummyCampaigns);
-    return Inertia::render('Scholarships/Index', ['campaigns' => $summary]);
-})->name('scholarships.index');
-
+Route::get('/scholarships', [\App\Http\Controllers\ScholarshipController::class, 'index'])->name('scholarships.index');
 Route::get('/scholarships/request', function () {
     return Inertia::render('Scholarships/Request');
 })->name('scholarships.request');
+Route::get('/scholarships/{id}', [\App\Http\Controllers\ScholarshipController::class, 'show'])->name('scholarships.show');
 
-Route::get('/scholarships/{id}', function ($id) use ($dummyCampaigns) {
-    $campaign = collect($dummyCampaigns)->firstWhere('id', (int)$id);
-    if (!$campaign) abort(404);
-    return Inertia::render('Scholarships/Show', ['campaign' => $campaign]);
-})->name('scholarships.show');
+// ─────────────────────────────────────────────
+//  AUTHENTICATED ROUTES
+// ─────────────────────────────────────────────
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [\App\Http\Controllers\ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/dashboard', function (Request $request) {
+        $user = $request->user()->load([
+            'talent',
+            'talent.skills',
+            'talent.experiences',
+            'talent.educations',
+            'talent.achievements',
+            'talent.projects',
+            'mentor',
+            'mentor.experiences',
+            'mentor.educations',
+            'mentor.achievements',
+            'mentor.programs',
+            'mentor.programs.registrations.user.talent',
+            'mentor.programs.sessions',
+            'mentorshipRegistrations.program.mentor.user',
+            'mentorshipRegistrations.program.sessions',
+        ]);
+        return Inertia::render('Dashboard', [
+            'userProfile' => $user
+        ]);
+    })->name('dashboard');
+
+    // Registration Endpoints for Dashboard
+    Route::post('/talents/register', function (Request $request) {
+        if (!$request->user()->talent) {
+            $request->user()->talent()->create([
+                'headline' => 'Talenta Baru',
+                'location' => 'Blitar, Indonesia',
+                'bio' => 'Saya adalah talenta baru di BlitarHub.',
+                'rating' => 0,
+                'reviews_count' => 0,
+                'jobs_completed' => 0,
+                'connections' => 0,
+            ]);
+        }
+        return back();
+    })->name('talents.register');
+
+    Route::post('/mentorships/register', function (Request $request) {
+        if (!$request->user()->mentor) {
+            $request->user()->mentor()->create([
+                'company' => 'Independen',
+                'expertise' => 'Keahlian Baru',
+                'location' => 'Blitar, Indonesia',
+                'bio' => 'Saya adalah mentor baru di BlitarHub.',
+                'rating' => 0,
+                'mentees_count' => 0,
+            ]);
+        }
+        return back();
+    })->name('mentorships.register');
+
+    // Profile Activity Routes
+    Route::post('/profile/mentor-experience', [\App\Http\Controllers\ProfileActivityController::class, 'addMentorExperience'])->name('profile.mentor-experience.store');
+    Route::post('/profile/talent-experience', [\App\Http\Controllers\ProfileActivityController::class, 'addTalentExperience'])->name('profile.talent-experience.store');
+    Route::post('/profile/talent-portfolio', [\App\Http\Controllers\ProfileActivityController::class, 'addTalentProject'])->name('profile.talent-portfolio.store');
+    Route::post('/profile/education', [\App\Http\Controllers\ProfileActivityController::class, 'addEducation'])->name('profile.education.store');
+    Route::post('/profile/skills', [\App\Http\Controllers\ProfileActivityController::class, 'updateSkills'])->name('profile.skills.update');
+    Route::post('/profile/bio', [\App\Http\Controllers\ProfileActivityController::class, 'updateBio'])->name('profile.bio.update');
+    Route::post('/profile/mentor-expertise', [\App\Http\Controllers\ProfileActivityController::class, 'updateExpertise'])->name('profile.mentor-expertise.update');
+    Route::post('/profile/mentor-bank', [\App\Http\Controllers\ProfileActivityController::class, 'updateBankDetails'])->name('profile.mentor-bank.update');
+
+    Route::delete('/profile/mentor-experience/{experience}', [\App\Http\Controllers\ProfileActivityController::class, 'deleteMentorExperience'])->name('profile.mentor-experience.destroy');
+    Route::delete('/profile/talent-experience/{experience}', [\App\Http\Controllers\ProfileActivityController::class, 'deleteTalentExperience'])->name('profile.talent-experience.destroy');
+    Route::delete('/profile/mentor-education/{education}', [\App\Http\Controllers\ProfileActivityController::class, 'deleteMentorEducation'])->name('profile.mentor-education.destroy');
+    Route::delete('/profile/talent-education/{education}', [\App\Http\Controllers\ProfileActivityController::class, 'deleteTalentEducation'])->name('profile.talent-education.destroy');
+    Route::delete('/profile/talent-project/{project}', [\App\Http\Controllers\ProfileActivityController::class, 'deleteTalentProject'])->name('profile.talent-project.destroy');
+    Route::post('/profile/achievement', [\App\Http\Controllers\ProfileActivityController::class, 'addAchievement'])->name('profile.achievement.store');
+    Route::delete('/profile/mentor-achievement/{achievement}', [\App\Http\Controllers\ProfileActivityController::class, 'deleteMentorAchievement'])->name('profile.mentor-achievement.destroy');
+    Route::delete('/profile/talent-achievement/{achievement}', [\App\Http\Controllers\ProfileActivityController::class, 'deleteTalentAchievement'])->name('profile.talent-achievement.destroy');
+
+    // Media Upload Routes
+    Route::post('/upload/avatar', [\App\Http\Controllers\MediaUploadController::class, 'uploadAvatar'])->name('upload.avatar');
+    Route::post('/upload/cover', [\App\Http\Controllers\MediaUploadController::class, 'uploadCover'])->name('upload.cover');
+    Route::post('/upload/project/{project}/docs', [\App\Http\Controllers\MediaUploadController::class, 'uploadProjectDocs'])->name('upload.project.docs');
+
+    // Chat Routes
+    Route::get('/api/conversations', [\App\Http\Controllers\ChatController::class, 'index']);
+    Route::post('/api/conversations', [\App\Http\Controllers\ChatController::class, 'createConversation']);
+    Route::get('/api/conversations/{conversation}/messages', [\App\Http\Controllers\ChatController::class, 'show']);
+    Route::post('/api/conversations/{conversation}/messages', [\App\Http\Controllers\ChatController::class, 'store']);
+    Route::post('/api/conversations/{conversation}/read', [\App\Http\Controllers\ChatController::class, 'markAsRead']);
+    Route::post('/api/messages/{message}/read', [\App\Http\Controllers\ChatController::class, 'markMessageAsRead']);
+
+    // Mentorship Registration & Payment
+    Route::post('/mentorship-registrations', [\App\Http\Controllers\MentorshipRegistrationController::class, 'store'])->name('mentorship-registrations.store');
+    Route::post('/mentorship-registrations/{id}/upload-proof', [\App\Http\Controllers\MentorshipRegistrationController::class, 'uploadProof'])->name('mentorship-registrations.upload-proof');
+    Route::patch('/mentorship-registrations/{id}/verify-payment', [\App\Http\Controllers\MentorshipRegistrationController::class, 'verifyPayment'])->name('mentorship-registrations.verify-payment');
+    Route::get('/mentorship-registrations/{id}/success', [\App\Http\Controllers\MentorshipRegistrationController::class, 'paymentSuccess'])->name('mentorship-registrations.success');
+
+    // Mentor Management
+    Route::patch('/mentor/registrations/{id}/approve', [\App\Http\Controllers\MentorshipManagementController::class, 'approve'])->name('mentor.registrations.approve');
+    Route::patch('/mentor/registrations/{id}/reject', [\App\Http\Controllers\MentorshipManagementController::class, 'reject'])->name('mentor.registrations.reject');
+    Route::post('/mentor/programs/{id}/sessions', [\App\Http\Controllers\MentorshipManagementController::class, 'storeSession'])->name('mentor.sessions.store');
+    
+    // Mentor Reviews
+    Route::post('/mentors/{mentorId}/reviews', [\App\Http\Controllers\ReviewController::class, 'storeMentorReview'])->name('mentors.reviews.store');
+
+    // Donations (requires auth)
+    Route::post('/donations', [\App\Http\Controllers\ScholarshipDonationController::class, 'store'])->name('donations.store');
+    Route::post('/donations/{id}/upload-proof', [\App\Http\Controllers\ScholarshipDonationController::class, 'uploadProof'])->name('donations.upload-proof');
+    Route::patch('/donations/{id}/verify-payment', [\App\Http\Controllers\ScholarshipDonationController::class, 'verifyPayment'])->name('donations.verify-payment');
+    Route::get('/donations/{id}/success', [\App\Http\Controllers\ScholarshipDonationController::class, 'paymentSuccess'])->name('donations.success');
+});
 
 require __DIR__.'/auth.php';

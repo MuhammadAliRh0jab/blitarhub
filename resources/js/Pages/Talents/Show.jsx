@@ -1,70 +1,88 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, router } from '@inertiajs/react';
+import axios from 'axios';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-export default function Show({ talent }) {
+export default function Show({ auth, talent }) {
+    const handleStartChat = async () => {
+        if (!auth?.user) {
+            router.get(route('login'));
+            return;
+        }
+
+        try {
+            const res = await axios.post('/api/conversations', { user_id: talent.user_id });
+            const conversation = res.data;
+            window.dispatchEvent(new CustomEvent('open-chat', { detail: conversation }));
+        } catch (error) {
+            console.error('Failed to start chat', error);
+            alert('Gagal memulai obrolan.');
+        }
+    };
+
     return (
-        <>
+        <AuthenticatedLayout>
             <Head title={`${talent.name} | BlitarHub`} />
-            <div className="min-h-screen bg-gray-100 font-sans">
-                {/* Navbar */}
-                <nav className="bg-white shadow-sm py-3 px-6 sticky top-0 z-50">
-                    <div className="max-w-5xl mx-auto flex justify-between items-center">
-                        <Link href={route('home')} className="flex items-center space-x-3">
-                            <img src="/logo.png" alt="Logo" style={{ height: '32px', width: 'auto' }} />
-                            <span className="font-extrabold text-lg text-orange-600 tracking-tight">BlitarHub<span className="text-gray-900">.</span></span>
-                        </Link>
-                        <div className="space-x-5 font-medium text-gray-600 hidden md:flex items-center text-sm">
-                            <Link href={route('talents.index')} className="text-orange-600 font-semibold">Talent Hub</Link>
-                            <Link href={route('mentorships.index')} className="hover:text-orange-600 transition">Mentorships</Link>
-                            <Link href={route('scholarships.index')} className="hover:text-orange-600 transition">Scholarships</Link>
-                        </div>
-                    </div>
-                </nav>
-
-                <div className="max-w-5xl mx-auto px-4 py-6">
+            
+            <div className="py-12">
+                <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                     {/* Profile Card Header */}
                     <div className="bg-white rounded-2xl shadow-sm overflow-hidden border border-gray-200 mb-6">
-                        {/* Cover */}
-                        <div className="h-48 bg-gradient-to-br from-orange-400 via-orange-500 to-amber-600 relative">
-                            <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-black/20 to-transparent"></div>
-                        </div>
+                        {/* ── Profile Header ── */}
+                        <div className="h-72 relative overflow-hidden rounded-t-2xl">
+                            {talent.cover_url ? (
+                                <img
+                                    src={talent.cover_url}
+                                    alt="Cover photo"
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-gradient-to-br from-orange-400 via-orange-500 to-amber-600" />
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
 
-                        {/* Profile Info */}
-                        <div className="px-8 pb-8 relative">
-                            <div className="flex items-end -mt-16 mb-6">
-                                <div className="w-32 h-32 rounded-full border-4 border-white bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold text-5xl shadow-xl flex-shrink-0">
-                                    {talent.name.charAt(0)}
+                            {/* Profile Info Overlay */}
+                            <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 flex flex-col sm:flex-row sm:items-end gap-5">
+                                <div className="w-28 h-28 rounded-2xl border-4 border-white bg-white flex items-center justify-center text-orange-600 font-bold text-4xl shadow-xl flex-shrink-0 overflow-hidden">
+                                    {talent.avatar_url ? (
+                                        <img src={talent.avatar_url} alt={talent.name} className="w-full h-full object-cover" />
+                                    ) : (
+                                        talent.name.charAt(0)
+                                    )}
                                 </div>
-                                <div className="ml-6 pb-1 flex-1">
-                                    <h1 className="text-3xl font-extrabold text-gray-900 mb-3">{talent.name}</h1>
-                                    <p className="text-lg text-orange-600 font-semibold mt-1">{talent.headline}</p>
-                                    <p className="text-sm text-gray-500 mt-1">📍 {talent.location}</p>
+                                <div className="sm:ml-2 pb-1 flex-1 text-white">
+                                    <h1 className="text-3xl font-extrabold mb-1 drop-shadow-md">{talent.name}</h1>
+                                    <p className="text-lg text-orange-300 font-semibold drop-shadow-md">{talent.headline}</p>
+                                    <p className="text-sm text-gray-200 mt-1 drop-shadow-md">📍 {talent.location}</p>
                                 </div>
-                                <div className="flex space-x-3 pb-1">
-                                    <button className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition">
+                                <div className="flex gap-3 pb-1 shrink-0">
+                                    <button className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-bold shadow-lg shadow-blue-900/50 hover:bg-blue-700 transition active:scale-95">
                                         Hire Me
                                     </button>
-                                    <button className="border-2 border-gray-300 text-gray-700 px-6 py-2.5 rounded-full font-bold hover:border-blue-600 hover:text-blue-600 transition">
-                                        Hubungi
+                                    <button onClick={handleStartChat} className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-6 py-2.5 rounded-full font-bold hover:bg-white/20 transition">
+                                        💬 Hubungi
                                     </button>
                                 </div>
                             </div>
+                        </div>
 
-                            {/* Stats Bar */}
-                            <div className="flex space-x-8 border-t border-gray-100 pt-5">
-                                <div className="text-center">
-                                    <div className="text-2xl font-extrabold text-gray-900">{talent.jobs_completed}</div>
-                                    <div className="text-xs text-gray-500 font-medium">Proyek Selesai</div>
+                        {/* Stats Bar */}
+                        <div className="px-6 sm:px-8 py-5 bg-white rounded-b-2xl">
+                            <div className="flex flex-wrap gap-6 border-gray-100 items-center justify-between">
+                                <div className="flex gap-8">
+                                    <div className="text-center">
+                                        <div className="text-2xl font-extrabold text-gray-900">{talent.jobs_completed}</div>
+                                        <div className="text-xs text-gray-500 font-medium">Proyek Selesai</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl font-extrabold text-amber-500">⭐ {talent.rating}</div>
+                                        <div className="text-xs text-gray-500 font-medium">{talent.reviews} Ulasan</div>
+                                    </div>
+                                    <div className="text-center">
+                                        <div className="text-2xl font-extrabold text-gray-900">{talent.connections}+</div>
+                                        <div className="text-xs text-gray-500 font-medium">Koneksi</div>
+                                    </div>
                                 </div>
-                                <div className="text-center">
-                                    <div className="text-2xl font-extrabold text-amber-500">⭐ {talent.rating}</div>
-                                    <div className="text-xs text-gray-500 font-medium">{talent.reviews} Ulasan</div>
-                                </div>
-                                <div className="text-center">
-                                    <div className="text-2xl font-extrabold text-gray-900">{talent.connections}+</div>
-                                    <div className="text-xs text-gray-500 font-medium">Koneksi</div>
-                                </div>
-                                <div className="flex-1"></div>
-                                <div className="flex flex-wrap gap-2 items-center">
+                                <div className="flex-1 flex flex-wrap gap-2 items-center justify-end">
                                     {talent.skills?.map((skill, i) => (
                                         <span key={i} className="px-3 py-1 text-xs font-bold bg-orange-50 text-orange-700 rounded-full border border-orange-100">{skill}</span>
                                     ))}
@@ -85,7 +103,7 @@ export default function Show({ talent }) {
                                 <p className="text-gray-700 leading-relaxed whitespace-pre-line">{talent.about}</p>
                             </div>
 
-                            {/* Pengalaman */}
+                            {/* Pengalaman Kerja */}
                             <div className="bg-white rounded-2xl shadow-sm p-8 border border-gray-200">
                                 <h2 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
                                     <span className="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3 text-orange-600">💼</span>
@@ -181,7 +199,7 @@ export default function Show({ talent }) {
                                     {talent.client_reviews?.map((rev, i) => (
                                         <div key={i} className="border-b border-gray-50 pb-4 last:border-0 last:pb-0">
                                             <div className="flex items-center space-x-2 mb-2">
-                                                <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">{rev.name.charAt(0)}</div>
+                                                <div className="w-7 h-7 rounded-full bg-gray-200 flex items-center justify-center text-xs font-bold text-gray-500">{(rev.name || '?').charAt(0)}</div>
                                                 <span className="font-bold text-sm text-gray-900">{rev.name}</span>
                                                 <span className="text-amber-400 text-xs">{'⭐'.repeat(rev.stars)}</span>
                                             </div>
@@ -195,8 +213,8 @@ export default function Show({ talent }) {
                             <div className="bg-orange-600 rounded-2xl shadow-sm p-6 text-white">
                                 <h2 className="text-lg font-bold mb-3">Tertarik Berkolaborasi?</h2>
                                 <p className="text-orange-100 text-sm mb-5">Hubungi {talent.name.split(' ')[0]} untuk mendiskusikan proyek Anda.</p>
-                                <button className="w-full bg-white text-orange-600 py-3 rounded-xl font-bold shadow hover:shadow-lg hover:scale-105 transition-all duration-300">
-                                    Kirim Pesan
+                                <button onClick={handleStartChat} className="w-full bg-white text-orange-600 py-3 rounded-xl font-bold shadow hover:shadow-lg hover:scale-105 transition-all duration-300">
+                                    Mulai Chat
                                 </button>
                             </div>
                         </div>
@@ -208,6 +226,6 @@ export default function Show({ talent }) {
                     </div>
                 </div>
             </div>
-        </>
+        </AuthenticatedLayout>
     );
 }

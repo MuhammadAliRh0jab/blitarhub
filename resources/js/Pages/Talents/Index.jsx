@@ -14,7 +14,9 @@ const categoryMap = {
     'Management':  ['Scrum','Jira','Project Planning','Agile','Stakeholder Management','PMP'],
 };
 
-export default function Index({ talents }) {
+import Navbar from '@/Components/Navbar';
+
+export default function Index({ auth, talents }) {
     const [query, setQuery]       = useState('');
     const [category, setCategory] = useState('Semua');
     const [sortBy, setSortBy]     = useState('rating');
@@ -53,20 +55,7 @@ export default function Index({ talents }) {
         <>
             <Head title="Talent Hub | BlitarHub" />
             <div className="min-h-screen bg-gray-50 font-sans">
-                {/* Navbar */}
-                <nav className="bg-white shadow-sm py-4 px-6 sticky top-0 z-50">
-                    <div className="max-w-7xl mx-auto flex justify-between items-center">
-                        <Link href={route('home')} className="flex items-center space-x-3">
-                            <img src="/logo.png" alt="Logo" style={{ height: '32px', width: 'auto' }} />
-                            <span className="font-extrabold text-xl text-orange-600 tracking-tight">BlitarHub<span className="text-gray-900">.</span></span>
-                        </Link>
-                        <div className="space-x-6 font-medium text-gray-600 hidden md:flex items-center">
-                            <Link href={route('talents.index')} className="text-orange-600 font-semibold">Talent Hub</Link>
-                            <Link href={route('mentorships.index')} className="hover:text-orange-600 transition">Mentorships</Link>
-                            <Link href={route('scholarships.index')} className="hover:text-orange-600 transition">Scholarships</Link>
-                        </div>
-                    </div>
-                </nav>
+                <Navbar />
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
                     {/* Header */}
@@ -140,12 +129,27 @@ export default function Index({ talents }) {
                             {filtered.map((talent) => (
                                 <Link key={talent.id} href={route('talents.show', talent.id)} className="block group">
                                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                                        <div className="h-24 bg-gradient-to-br from-orange-400 via-orange-500 to-amber-500"></div>
+                                        {/* Cover Photo */}
+                                        <div className="h-28 relative overflow-hidden">
+                                            {talent.cover_url ? (
+                                                <img
+                                                    src={talent.cover_url}
+                                                    alt="Cover"
+                                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full bg-gradient-to-br from-orange-400 via-orange-500 to-amber-500" />
+                                            )}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+                                        </div>
                                         <div className="px-5 pb-5">
-                                            <div className="flex justify-center -mt-10 mb-3">
-                                                <div className="w-20 h-20 rounded-full border-4 border-white bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center text-gray-500 font-bold text-2xl shadow-md group-hover:shadow-lg transition">
-                                                    {talent.name.charAt(0)}
-                                                </div>
+                                            <div className="flex justify-center -mt-10 mb-3 relative z-10">
+                                                {talent.avatar_url
+                                                    ? <img src={talent.avatar_url} alt={talent.name} className="w-20 h-20 rounded-full border-4 border-white object-cover shadow-md group-hover:shadow-lg transition" />
+                                                    : <div className="w-20 h-20 rounded-full border-4 border-white bg-gradient-to-br from-orange-100 to-orange-200 flex items-center justify-center text-orange-600 font-bold text-2xl shadow-md group-hover:shadow-lg transition">
+                                                        {talent.name.charAt(0)}
+                                                      </div>
+                                                }
                                             </div>
                                             <div className="text-center mb-4">
                                                 <h3 className="text-base font-bold text-gray-900 leading-tight">{talent.name}</h3>
@@ -163,8 +167,8 @@ export default function Index({ talents }) {
                                                 {talent.skills?.length > 4 && <span className="px-2 py-0.5 text-[11px] font-bold bg-gray-100 text-gray-500 rounded-full">+{talent.skills.length - 4}</span>}
                                             </div>
                                             <div className="pt-3 border-t border-gray-100 flex justify-between items-center">
-                                                <span className="text-xs text-gray-400 font-medium group-hover:text-blue-600 transition">Lihat Profil →</span>
-                                                <span className="text-xs font-bold bg-gray-900 text-white px-4 py-1.5 rounded-full group-hover:bg-blue-600 transition">Hire</span>
+                                                <span className="text-xs text-gray-400 font-medium group-hover:text-orange-600 transition">Lihat Profil →</span>
+                                                <span className="text-xs font-bold bg-gray-900 text-white px-4 py-1.5 rounded-full group-hover:bg-orange-600 transition">Hire</span>
                                             </div>
                                         </div>
                                     </div>
@@ -172,6 +176,7 @@ export default function Index({ talents }) {
                             ))}
                         </div>
                     )}
+
                 </div>
             </div>
         </>

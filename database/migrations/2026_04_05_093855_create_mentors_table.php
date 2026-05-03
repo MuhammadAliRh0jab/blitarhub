@@ -16,6 +16,10 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('company')->nullable();
             $table->string('expertise')->nullable();
+            $table->string('location')->nullable();
+            $table->text('bio')->nullable();            // maps to 'about' in frontend
+            $table->decimal('rating', 3, 1)->default(0);
+            $table->integer('mentees_count')->default(0);
             $table->string('linkedin_url')->nullable();
             $table->timestamps();
         });

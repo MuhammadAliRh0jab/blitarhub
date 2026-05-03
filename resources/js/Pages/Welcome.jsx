@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { useRef, useEffect } from 'react';
 
-export default function Welcome({ featuredTalents, featuredMentors, activeCampaigns }) {
+export default function Welcome({ auth, featuredTalents, featuredMentors, activeCampaigns }) {
     // Calculate aggregated donation stats
     const totalDonated = activeCampaigns?.reduce((acc, c) => acc + c.current_amount, 0) || 0;
     const totalTarget = activeCampaigns?.reduce((acc, c) => acc + c.target_amount, 0) || 0;
@@ -76,8 +76,14 @@ export default function Welcome({ featuredTalents, featuredMentors, activeCampai
                             <Link href={route('scholarships.index')} className="hover:text-orange-600 transition">Scholarships</Link>
                         </div>
                         <div className="flex items-center space-x-4">
-                            <Link href="/login" className="text-gray-600 font-bold hover:text-orange-600 hidden sm:block">Login</Link>
-                            <Link href="/register" className="bg-orange-600 text-white px-6 py-2.5 rounded-full font-bold hover:bg-orange-700 transition shadow-lg shadow-orange-200 active:scale-95">Mulai Sekarang</Link>
+                            {auth?.user ? (
+                                <Link href={route('dashboard')} className="bg-orange-600 text-white px-6 py-2.5 rounded-full font-bold hover:bg-orange-700 transition shadow-lg shadow-orange-200 active:scale-95">Dashboard</Link>
+                            ) : (
+                                <>
+                                    <Link href="/login" className="text-gray-600 font-bold hover:text-orange-600 hidden sm:block">Login</Link>
+                                    <Link href="/register" className="bg-orange-600 text-white px-6 py-2.5 rounded-full font-bold hover:bg-orange-700 transition shadow-lg shadow-orange-200 active:scale-95">Mulai Sekarang</Link>
+                                </>
+                            )}
                         </div>
                     </div>
                 </nav>

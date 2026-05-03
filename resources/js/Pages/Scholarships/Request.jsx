@@ -11,6 +11,9 @@ export default function Request() {
         target_amount: '',
         description: '',
         institution: '',
+        bank_name: '',
+        bank_account_number: '',
+        bank_account_name: '',
     });
 
     const categories = [
@@ -65,7 +68,7 @@ export default function Request() {
                             <div className="space-y-6">
                                 {[
                                     { s: 1, t: 'Informasi Personal', d: 'Data diri lengkap pemohon' },
-                                    { s: 2, t: 'Detail Program', d: 'Tujuan dan kebutuhan dana' },
+                                    { s: 2, t: 'Detail Program & Bank', d: 'Tujuan, dana, dan rekening' },
                                     { s: 3, t: 'Verifikasi Data', d: 'Unggah dokumen pendukung' },
                                 ].map((item) => (
                                     <div key={item.s} className="flex items-start space-x-4 group">
@@ -189,6 +192,38 @@ export default function Request() {
                                                     onChange={(e) => setFormData({...formData, target_amount: e.target.value})}
                                                 />
                                             </div>
+                                            <div>
+                                                <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Nama Bank (Untuk Penyaluran Dana)</label>
+                                                <input 
+                                                    type="text" 
+                                                    className="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-orange-200 transition-all font-medium text-gray-900 placeholder:text-gray-300" 
+                                                    placeholder="Contoh: Bank Mandiri"
+                                                    value={formData.bank_name}
+                                                    onChange={(e) => setFormData({...formData, bank_name: e.target.value})}
+                                                />
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div>
+                                                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Nomor Rekening</label>
+                                                    <input 
+                                                        type="text" 
+                                                        className="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-orange-200 transition-all font-medium text-gray-900 placeholder:text-gray-300" 
+                                                        placeholder="0123456789"
+                                                        value={formData.bank_account_number}
+                                                        onChange={(e) => setFormData({...formData, bank_account_number: e.target.value})}
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <label className="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Atas Nama</label>
+                                                    <input 
+                                                        type="text" 
+                                                        className="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-orange-200 transition-all font-medium text-gray-900 placeholder:text-gray-300" 
+                                                        placeholder="Nama Pemilik Rekening"
+                                                        value={formData.bank_account_name}
+                                                        onChange={(e) => setFormData({...formData, bank_account_name: e.target.value})}
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
 
                                         <div className="flex gap-4 mt-8">
@@ -200,7 +235,7 @@ export default function Request() {
                                             </button>
                                             <button 
                                                 onClick={handleNext}
-                                                disabled={!formData.category || !formData.title || !formData.target_amount}
+                                                disabled={!formData.category || !formData.title || !formData.target_amount || !formData.bank_name || !formData.bank_account_number || !formData.bank_account_name}
                                                 className="w-2/3 bg-orange-600 text-white py-5 rounded-2xl font-black text-lg hover:bg-orange-700 transition-all shadow-lg shadow-orange-100 active:scale-95 disabled:opacity-50 disabled:pointer-events-none"
                                             >
                                                 Lanjut Verifikasi

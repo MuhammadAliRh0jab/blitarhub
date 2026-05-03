@@ -16,7 +16,10 @@ return new class extends Migration
             $table->foreignId('mentor_id')->constrained()->cascadeOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('price_or_free')->nullable();
+            $table->string('price')->nullable();         // "Rp 250.000" or "Gratis"
+            $table->string('duration')->nullable();       // "60 menit", "4x 90 menit"
+            $table->string('format')->nullable();         // "Video Call", "Cohort-based"
+            $table->integer('enrolled')->default(0);
             $table->integer('quota')->nullable();
             $table->timestamps();
         });

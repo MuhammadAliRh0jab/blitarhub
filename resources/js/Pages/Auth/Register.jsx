@@ -25,15 +25,20 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
-            <form onSubmit={submit}>
+            <div className="mb-8 text-center sm:text-left">
+                <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight">Mulai Perjalananmu 🚀</h2>
+                <p className="mt-2 text-sm text-gray-600 font-medium">Daftar sekarang untuk bergabung dengan BlitarHub.</p>
+            </div>
+
+            <form onSubmit={submit} className="space-y-5">
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value="Nama Lengkap" />
 
                     <TextInput
                         id="name"
                         name="name"
                         value={data.name}
-                        className="mt-1 block w-full"
+                        className="mt-1.5 block w-full"
                         autoComplete="name"
                         isFocused={true}
                         onChange={(e) => setData('name', e.target.value)}
@@ -43,7 +48,7 @@ export default function Register() {
                     <InputError message={errors.name} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
@@ -51,7 +56,7 @@ export default function Register() {
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="mt-1.5 block w-full"
                         autoComplete="username"
                         onChange={(e) => setData('email', e.target.value)}
                         required
@@ -60,7 +65,7 @@ export default function Register() {
                     <InputError message={errors.email} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel htmlFor="password" value="Password" />
 
                     <TextInput
@@ -68,7 +73,7 @@ export default function Register() {
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="mt-1.5 block w-full"
                         autoComplete="new-password"
                         onChange={(e) => setData('password', e.target.value)}
                         required
@@ -77,10 +82,10 @@ export default function Register() {
                     <InputError message={errors.password} className="mt-2" />
                 </div>
 
-                <div className="mt-4">
+                <div>
                     <InputLabel
                         htmlFor="password_confirmation"
-                        value="Confirm Password"
+                        value="Konfirmasi Password"
                     />
 
                     <TextInput
@@ -88,7 +93,7 @@ export default function Register() {
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}
-                        className="mt-1 block w-full"
+                        className="mt-1.5 block w-full"
                         autoComplete="new-password"
                         onChange={(e) =>
                             setData('password_confirmation', e.target.value)
@@ -102,18 +107,21 @@ export default function Register() {
                     />
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Already registered?
-                    </Link>
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
+                <div className="pt-4">
+                    <PrimaryButton className="w-full" disabled={processing}>
+                        Daftar Akun
                     </PrimaryButton>
                 </div>
+
+                <p className="mt-8 text-center text-sm text-gray-600 font-medium">
+                    Sudah punya akun?{' '}
+                    <Link
+                        href={route('login')}
+                        className="font-semibold text-orange-600 hover:text-orange-500 hover:underline transition-colors focus:outline-none"
+                    >
+                        Masuk di sini
+                    </Link>
+                </p>
             </form>
         </GuestLayout>
     );

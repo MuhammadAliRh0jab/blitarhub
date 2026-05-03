@@ -15,11 +15,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Admin user
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin BlitarHub',
+            'email' => 'admin@blitarhub.com',
+        ]);
+
+        $this->call([
+            TalentSeeder::class,
+            MentorSeeder::class,
+            CampaignSeeder::class,
+            LargeDataSeeder::class,
         ]);
     }
 }
